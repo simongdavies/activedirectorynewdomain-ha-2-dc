@@ -52,6 +52,7 @@ Below are the parameters that the template expects
 | adBDCModulesURL |The URL to the zip containing the DSC package that creates and installs the second DC <br> <ul> <li>**https://raw.githubusercontent.com/simongdavies/activedirectorynewdomain-ha-2-dc/master/CreateADBDC.ps1.zip (default)**</li></ul>|
 | adBDCConfigurationFunction | The name of the DSC Configuration Function that configures the VM , creates the DC etc.<br> <ul> <li>**CreateADBDC.ps1\\CreateADBDC(default)** </li></ul> |
 | addnsName | The DNS prefix for the public IP address used by the Load Balancer |
-| DNSServerAddress | The DNS address of the first DNS Server used by the VNET <br> <ul><li>127.0.0.1 **(default)**</li></ul>|
-
+| DNSServerAddress | The DNS address of the first DNS Server used by the VNET <br> <ul><li>8.8.8.8 **(default)**</li></ul>|
+| PDCRDPPort | The public RDP port for the PDC VM |
+| BDCRDPPort | The public RDP port for the BDC VM |
 

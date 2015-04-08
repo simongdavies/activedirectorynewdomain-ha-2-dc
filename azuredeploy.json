@@ -210,7 +210,7 @@
 			"metadata": { 
          		"Description": "The URL to the zip containing the DSC package that creates and installs the BDC" 
 	     	},
-			"defaultValue":"https://raw.githubusercontent.com/simongdavies/activedirectorynewdomain-ha-2-dc/master/CreateADPDC.ps1.zip"
+			"defaultValue":"https://raw.githubusercontent.com/simongdavies/activedirectorynewdomain-ha-2-dc/master/CreateADBDC.ps1.zip"
 		},
 		"adBDCConfigurationFunction":{
 			"type":"string",
@@ -232,6 +232,20 @@
          		"Description": "The DNS address of the first DNS Server used by the VNET" 
 	     	},
 	     	"defaultValue":"8.8.8.8"
+		},
+		"PDCRDPPort":{
+			"type":"int",
+			"metadata": { 
+         		"Description": "The public RDP port for the PDC VM" 
+	     	},
+	     	"defaultValue":3389
+		},
+		"BDCRDPPort":{
+			"type":"int",
+			"metadata": { 
+         		"Description": "The public RDP port for the BDC VM" 
+	     	},
+	     	"defaultValue":13389
 		}
 	},
 	"variables": {
@@ -392,7 +406,7 @@
 	                          "id" : "[variables('adPDCIPConfigID')]"
 	                      },
 	                      "protocol": "tcp",
-	                      "frontendPort": 3389,
+	                      "frontendPort": "[parameters('PDCRDPPort')]",
 	                      "backendPort": 3389,
 	                      "enableFloatingIP": false
 	                  }                
@@ -409,7 +423,7 @@
 	                          "id" : "[variables('adBDCIPConfigID')]"
 	                      },
 	                      "protocol": "tcp",
-	                      "frontendPort": 13389,
+	                      "frontendPort": "[parameters('BDCRDPPort')]",
 	                      "backendPort": 3389,
 	                      "enableFloatingIP": false
 	                  }                
@@ -510,7 +524,7 @@
             "location": "[parameters('deploymentLocation')]",
             "dependsOn": [
             	"[resourceId('Microsoft.Network/networkInterfaces',parameters('adBDCNicName'))]",
-                "[concat('Microsoft.Compute/virtualMachines/', parameters('adBDCVMName'))]"
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('adPDCVMName'))]"
             ],
             "properties": {
                 "hardwareProfile": {
@@ -559,7 +573,7 @@
 		            "apiVersion": "2014-12-01-preview",
 		            "location": "[parameters('deploymentLocation')]",
 		            "dependsOn":[
-		            	"[resourceId('Microsoft.Compute/virtualMachines', parameters('adBDCVMName'))]"
+              				"[concat('Microsoft.Compute/virtualMachines/', parameters('adPDCVMName'),'/extensions/CreateADForest')]" 
 		            ],
 		            "properties": {
 		                "publisher": "Microsoft.Powershell",
