@@ -573,7 +573,8 @@
 		            "apiVersion": "2014-12-01-preview",
 		            "location": "[parameters('deploymentLocation')]",
 		            "dependsOn":[
-              				"[concat('Microsoft.Compute/virtualMachines/', parameters('adPDCVMName'),'/extensions/CreateADForest')]" 
+              				"[concat('Microsoft.Compute/virtualMachines/', parameters('adBDCVMName'))]",
+		            		"[concat('Microsoft.Compute/virtualMachines/', parameters('adPDCVMName'),'/extensions/CreateADForest')]" 
 		            ],
 		            "properties": {
 		                "publisher": "Microsoft.Powershell",

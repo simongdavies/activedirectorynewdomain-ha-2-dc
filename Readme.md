@@ -8,9 +8,7 @@ There are a number of issues\workarounds in this template and the associated DSC
 
 2. Version 1.7 of the DSC Extension has a problem whereby the script execution policy will not allow scripts to be executed , therefore the DSC script provided updates the execution policy before the DSC extension is run and then sets it back to default once the configuration has been applied.
 
-3. There is no way of specifyig dependencies on VM extension resources in templates, therefore the script relies on the DSC confgiuraation for the second VM waiting for the domain created by the DSC configuration in the first VM to become available.
-
-**4. The template deployment may report failure even though the script succeeds**
+**3. The template deployment may report failure even though the script succeeds**
 
 
 Click the button below to deploy
