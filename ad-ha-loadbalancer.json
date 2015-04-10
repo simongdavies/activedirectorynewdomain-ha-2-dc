@@ -1,0 +1,75 @@
+{
+		  "apiVersion": "2014-12-01-preview",
+		  "name": "[variables('adlbName')]",
+		  "type": "Microsoft.Network/loadBalancers",
+		  "location": "[parameters('deploymentLocation')]",
+		  "dependsOn": [
+			  "[concat('Microsoft.Network/networkInterfaces/', parameters('adPDCNicName'))]",
+			  "[concat('Microsoft.Network/networkInterfaces/', parameters('adBDCNicName'))]",
+			  "[resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]"
+		  ],
+		  "properties": {
+			  "frontendIPConfigurations": [
+				  {
+					  "name": "LBFE",
+					  "properties": {
+						"publicIPAddress": {
+							"id": "[resourceId('Microsoft.Network/publicIPAddresses',parameters('publicIPAddressName'))]"
+						},
+					  }
+				  }
+			  ],
+			  "backendAddressPools": [
+				  {
+					  "name": "LBBE",
+					  "properties": {
+						  "backendIPConfigurations": [
+							  {
+								"id" : "[variables('adPDCIPConfigID')]"
+							  },
+							  {
+								"id" : "[variables('adBDCIPConfigID')]"
+							  }
+						  ]
+					  }
+				  }
+			  ],
+			  "inboundNatRules": [
+				  {
+					  "name": "adPDCRDP",
+					  "properties": {
+						  "frontendIPConfigurations": [
+							  {
+									"id": "[variables('adlbFEConfigID')]"
+							  }
+						  ],
+						  "backendIPConfiguration": {
+							  "id" : "[variables('adPDCIPConfigID')]"
+						  },
+						  "protocol": "tcp",
+						  "frontendPort": "[parameters('PDCRDPPort')]",
+						  "backendPort": 3389,
+						  "enableFloatingIP": false
+					  }
+				  },
+				  {
+					  "name": "adBDCRDP",
+					  "properties": {
+						  "frontendIPConfigurations": [
+							  {
+									"id": "[variables('adlbFEConfigID')]"
+							  }
+						  ],
+						  "backendIPConfiguration": {
+							  "id" : "[variables('adBDCIPConfigID')]"
+						  },
+						  "protocol": "tcp",
+						  "frontendPort": "[parameters('BDCRDPPort')]",
+						  "backendPort": 3389,
+						  "enableFloatingIP": false
+					  }
+				  }
+
+			  ]
+		  }
+		},
