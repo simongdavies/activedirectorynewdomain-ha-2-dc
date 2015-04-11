@@ -220,13 +220,6 @@
 			},
 			"defaultValue":"New DNS Prefix"
 		},
-		"DNSServerAddress":{
-			"type":"string",
-			"metadata": {
-				"Description": "The DNS address of the first DNS Server used by the VNET"
-			},
-			"defaultValue":"8.8.8.8"
-		},
 		"PDCRDPPort":{
 			"type":"int",
 			"metadata": {

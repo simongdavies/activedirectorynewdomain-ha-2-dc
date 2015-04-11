@@ -3,10 +3,10 @@
 	"contentVersion": "1.0.0.0",
 	"parameters": {
 		"newStorageAccountName": {
-			"value": "adarmtest"
+			"value": "adarmhatest"
 		},
 		"addnsName":{
-			"value":"adarmtest"
+			"value":"adarmhatest"
 		}
 	}
 }
