@@ -190,7 +190,7 @@
 			"metadata": {
 				"Description": "The URL to the zip containing the DSC package that creates and installs AD"
 			},
-			"defaultValue":"https://raw.githubusercontent.com/simongdavies/activedirectorynewdomain-ha-2-dc/master/CreateADPDC.ps1.zip"
+			"defaultValue":"https://raw.githubusercontent.com/simongdavies/activedirectorynewdomain-ha-2-dc/VNetLink/CreateADPDC.ps1.zip"
 		},
 		"adPDCConfigurationFunction":{
 			"type":"string",
@@ -204,7 +204,7 @@
 			"metadata": {
 				"Description": "The URL to the zip containing the DSC package that prepares the BDC VM"
 			},
-			"defaultValue":"https://raw.githubusercontent.com/simongdavies/activedirectorynewdomain-ha-2-dc/master/PrepareADBDC.ps1.zip"
+			"defaultValue":"https://raw.githubusercontent.com/simongdavies/activedirectorynewdomain-ha-2-dc/VNetLink/PrepareADBDC.ps1.zip"
 		},
 		"adBDCPrepareConfigurationFunction":{
 			"type":"string",
@@ -218,7 +218,7 @@
 			"metadata": {
 				"Description": "The URL to the zip containing the DSC package that creates and installs the BDC"
 			},
-			"defaultValue":"https://raw.githubusercontent.com/simongdavies/activedirectorynewdomain-ha-2-dc/master/CreateADBDC.ps1.zip"
+			"defaultValue":"https://raw.githubusercontent.com/simongdavies/activedirectorynewdomain-ha-2-dc/VNetLink/CreateADBDC.ps1.zip"
 		},
 		"adBDCCreateConfigurationFunction":{
 			"type":"string",
