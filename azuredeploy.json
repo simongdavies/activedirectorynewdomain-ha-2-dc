@@ -534,7 +534,7 @@
 					"virtualNetworkAddressRange": {"value":"[parameters('virtualNetworkAddressRange')]"},
 					"subnetName": {"value":"[parameters('adSubnetName')]"},
 					"subnetRange": {"value":"[parameters('adSubnet')]"},
-					"DNSServerAddress": {"value":"[parameters('adPDCNicIPAddress')]"}
+					"DNSServerAddress": {"value":["[parameters('adPDCNicIPAddress')]"]}
 				}
 			}
 		},
@@ -609,41 +609,43 @@
 						},
 						"protectedSettings": null
 					}
-				},
-				{
-					"type": "Microsoft.Compute/virtualMachines/extensions",
-					"name": "[concat(parameters('adBDCVMName'),'/CreateBDC')]",
-					"apiVersion": "2014-12-01-preview",
-					"location": "[parameters('deploymentLocation')]",
-					"dependsOn":[
-							"[concat('Microsoft.Compute/virtualMachines/', parameters('adBDCVMName'))]",
-							"Microsoft.Resources/deployments/UpdateVNetDNS1"
-					],
-					"properties": {
-						"publisher": "Microsoft.Powershell",
-						"type": "DSC",
-						"typeHandlerVersion": "1.7",
-						"settings": {
-							"ModulesUrl": "[parameters('adBDCCreateModulesURL')]",
-							"ConfigurationFunction": "[parameters('adBDCCreateConfigurationFunction')]",
-							"Properties": {
-								"DomainName": "[parameters('domainName')]",
-								"DomainNetBiosName":"[parameters('domainNetbiosName')]",
-								"DnsServerAddress" :"[parameters('adPDCNicIPAddress')]",
-								"AdminCreds":{
-									"UserName": "[parameters('adminUserName')]",
-									"Password": "PrivateSettingsRef:AdminPassword"
-								}
-							}
-						},
-						"protectedSettings": {
-							"Items": {
-								"AdminPassword": "[parameters('adminPassword')]"
-							}
+				}
+
+			]
+		},
+		{
+			"type": "Microsoft.Compute/virtualMachines/extensions",
+			"name": "[concat(parameters('adBDCVMName'),'/CreateBDC')]",
+			"apiVersion": "2014-12-01-preview",
+			"location": "[parameters('deploymentLocation')]",
+			"dependsOn":[
+				"[concat('Microsoft.Compute/virtualMachines/', parameters('adBDCVMName'))]",
+					"[concat('Microsoft.Compute/virtualMachines/', parameters('adBDCVMName'),'/extensions/PrepareBDC')]",
+					"Microsoft.Resources/deployments/UpdateVNetDNS1"
+			],
+			"properties": {
+				"publisher": "Microsoft.Powershell",
+				"type": "DSC",
+				"typeHandlerVersion": "1.7",
+				"settings": {
+					"ModulesUrl": "[parameters('adBDCCreateModulesURL')]",
+					"ConfigurationFunction": "[parameters('adBDCCreateConfigurationFunction')]",
+					"Properties": {
+						"DomainName": "[parameters('domainName')]",
+						"DomainNetBiosName":"[parameters('domainNetbiosName')]",
+						"DnsServerAddress" :"[parameters('adPDCNicIPAddress')]",
+						"AdminCreds":{
+							"UserName": "[parameters('adminUserName')]",
+							"Password": "PrivateSettingsRef:AdminPassword"
 						}
 					}
+				},
+				"protectedSettings": {
+					"Items": {
+						"AdminPassword": "[parameters('adminPassword')]"
+					}
 				}
-			]
+			}
 		},
 		{
 			"name": "UpdateVNetDNS2",
