@@ -42,7 +42,7 @@
 			"defaultValue":"10.0.0.0/24"
 		},
 		"DNSServerAddress":{
-			"type":"string",
+			"type":"array",
 			"metadata": {
 				"Description": "The DNS address(es) of the DNS Server(s) used by the VNET"
 			}
@@ -61,9 +61,8 @@
 				]
 				},
 				"dhcpOptions": {
-				  "dnsServers": [
-					"[parameters('DNSServerAddress')]"
-				  ]
+				  "dnsServers": "[parameters('DNSServerAddress')]"
+
 				},
 				"subnets": [
 					{
