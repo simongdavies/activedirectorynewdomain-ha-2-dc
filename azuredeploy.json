@@ -192,41 +192,6 @@
 			},
 			"defaultValue":"https://raw.githubusercontent.com/simongdavies/activedirectorynewdomain-ha-2-dc/VNetLink/CreateADPDC.ps1.zip"
 		},
-		"adPDCConfigurationFunction":{
-			"type":"string",
-			"metadata": {
-				"Description": "The name of the DSC Configuration Function that configures the VM , creates the AD Domain etc."
-			},
-			"defaultValue":"CreateADPDC.ps1\\CreateADPDC"
-		},
-		"adBDCPrepareModulesURL":{
-			"type":"string",
-			"metadata": {
-				"Description": "The URL to the zip containing the DSC package that prepares the BDC VM"
-			},
-			"defaultValue":"https://raw.githubusercontent.com/simongdavies/activedirectorynewdomain-ha-2-dc/VNetLink/PrepareADBDC.ps1.zip"
-		},
-		"adBDCPrepareConfigurationFunction":{
-			"type":"string",
-			"metadata": {
-				"Description": "The name of the DSC Configuration Function that prepares the BDC VM"
-			},
-			"defaultValue":"PrepareADBDC.ps1\\PrepareADBDC"
-		},
-		"adBDCCreateModulesURL":{
-			"type":"string",
-			"metadata": {
-				"Description": "The URL to the zip containing the DSC package that creates and installs the BDC"
-			},
-			"defaultValue":"https://raw.githubusercontent.com/simongdavies/activedirectorynewdomain-ha-2-dc/VNetLink/CreateADBDC.ps1.zip"
-		},
-		"adBDCCreateConfigurationFunction":{
-			"type":"string",
-			"metadata": {
-				"Description": "The name of the DSC Configuration Function that configures the VM , creates the BDC etc."
-			},
-			"defaultValue":"CreateADBDC.ps1\\CreateADBDC"
-		},
 		"addnsName":{
 			"type":"string",
 			"metadata": {
@@ -247,6 +212,13 @@
 				"Description": "The public RDP port for the BDC VM"
 			},
 			"defaultValue":13389
+		},
+		"AssetLocation" :{
+			"type":"string",
+			"metadata": {
+				"Description": "The location of resources such as templates and DSC modules that the script is dependent"
+			},
+			"defaultValue":"https://raw.githubusercontent.com/azurermtemplates/azurermtemplates/master/activedirectorynewdomain-ha-2-dc"
 		}
 	},
 	"variables": {
@@ -263,8 +235,12 @@
 		"adPDCDataDisk":"ADPDCDataDisk",
 		"adBDCDataDisk":"ADBDCDataDisk",
 		"adDataDiskSize":1000,
-		"vnetTemplateUri":"https://raw.githubusercontent.com/simongdavies/activedirectorynewdomain-ha-2-dc/VNetLink/vnet.json",
-		"vnetwithDNSTemplateUri":"https://raw.githubusercontent.com/simongdavies/activedirectorynewdomain-ha-2-dc/VNetLink/vnet-with-dns-server.json"
+		"vnetTemplateUri":"[concat(parameters('AssetLocation'),'/vnet.json')]",
+		"vnetwithDNSTemplateUri":"[concat(parameters('AssetLocation'),'/vnet-with-dns-server.json')]",
+		"adPDCModulesURL":"[concat(parameters('AssetLocation'),'/CreateADPDC.ps1.zip')]",
+		"adPDCConfigurationFunction":"CreateADPDC.ps1\\CreateADPDC",
+		"adBDCModulesURL":"[concat(parameters('AssetLocation'),'/VNetLink/CreateADBDC.ps1.zip')]",
+		"adBDCConfigurationFunction":"CreateADBDC.ps1\\CreateADBDC"
 	},
 	"resources": [
 		{
@@ -495,8 +471,8 @@
 						"type": "DSC",
 						"typeHandlerVersion": "1.7",
 						"settings": {
-							"ModulesUrl": "[parameters('adPDCModulesURL')]",
-							"ConfigurationFunction": "[parameters('adPDCConfigurationFunction')]",
+							"ModulesUrl": "[variables('adPDCModulesURL')]",
+							"ConfigurationFunction": "[variables('adPDCConfigurationFunction')]",
 							"Properties": {
 								"DomainName": "[parameters('domainName')]",
 								"DomainNetBiosName":"[parameters('domainNetbiosName')]",
@@ -547,7 +523,8 @@
 				"[resourceId('Microsoft.Storage/storageAccounts',parameters('newStorageAccountName'))]",
 				"[resourceId('Microsoft.Network/networkInterfaces',parameters('adBDCNicName'))]",
 				"[resourceId('Microsoft.Compute/availabilitySets', parameters('adAvailabilitySetName'))]",
-				"[resourceId('Microsoft.Network/loadBalancers',variables('adLBName'))]"
+				"[resourceId('Microsoft.Network/loadBalancers',variables('adLBName'))]",
+				"Microsoft.Resources/deployments/UpdateVNetDNS1"
 			],
 			"properties": {
 				"hardwareProfile": {
@@ -588,30 +565,7 @@
 						}
 					]
 				}
-			},
-			"resources" :[
-				{
-					"type": "Microsoft.Compute/virtualMachines/extensions",
-					"name": "[concat(parameters('adBDCVMName'),'/PrepareBDC')]",
-					"apiVersion": "2014-12-01-preview",
-					"location": "[parameters('deploymentLocation')]",
-					"dependsOn":[
-							"[concat('Microsoft.Compute/virtualMachines/', parameters('adBDCVMName'))]"
-					],
-					"properties": {
-						"publisher": "Microsoft.Powershell",
-						"type": "DSC",
-						"typeHandlerVersion": "1.7",
-						"settings": {
-							"ModulesUrl": "[parameters('adBDCPrepareModulesURL')]",
-							"ConfigurationFunction": "[parameters('adBDCPrepareConfigurationFunction')]",
-							"Properties": null
-						},
-						"protectedSettings": null
-					}
-				}
-
-			]
+			}
 		},
 		{
 			"type": "Microsoft.Compute/virtualMachines/extensions",
@@ -619,17 +573,15 @@
 			"apiVersion": "2014-12-01-preview",
 			"location": "[parameters('deploymentLocation')]",
 			"dependsOn":[
-				"[concat('Microsoft.Compute/virtualMachines/', parameters('adBDCVMName'))]",
-					"[concat('Microsoft.Compute/virtualMachines/', parameters('adBDCVMName'),'/extensions/PrepareBDC')]",
-					"Microsoft.Resources/deployments/UpdateVNetDNS1"
+				"[concat('Microsoft.Compute/virtualMachines/', parameters('adBDCVMName'))]"
 			],
 			"properties": {
 				"publisher": "Microsoft.Powershell",
 				"type": "DSC",
 				"typeHandlerVersion": "1.7",
 				"settings": {
-					"ModulesUrl": "[parameters('adBDCCreateModulesURL')]",
-					"ConfigurationFunction": "[parameters('adBDCCreateConfigurationFunction')]",
+					"ModulesUrl": "[variables('adBDCModulesURL')]",
+					"ConfigurationFunction": "[variables('adBDCConfigurationFunction')]",
 					"Properties": {
 						"DomainName": "[parameters('domainName')]",
 						"DomainNetBiosName":"[parameters('domainNetbiosName')]",
