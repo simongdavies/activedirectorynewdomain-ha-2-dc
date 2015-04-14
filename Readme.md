@@ -43,4 +43,6 @@ Below are the parameters that the template expects
 | addnsName | The DNS prefix for the public IP address used by the Load Balancer |
 | PDCRDPPort | The public RDP port for the PDC VM |
 | BDCRDPPort | The public RDP port for the BDC VM |
+| AssetLocation | The location of resources such as templates and DSC modules that the script is dependent <br> <ul><li> **https://raw.githubusercontent.com/azurermtemplates/azurermtemplates/master/activedirectorynewdomain (default)**</li></ul> |
+
 
