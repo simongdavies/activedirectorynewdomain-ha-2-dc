@@ -21,31 +21,16 @@ configuration CreateADBDC
         [Parameter(Mandatory)]
         [System.Management.Automation.PSCredential]$Admincreds,
 
-        [Parameter(Mandatory)]
-        [string]$DnsServerAddress,
-
         [Int]$RetryCount=20,
         [Int]$RetryIntervalSec=30,
         [String]$DomainNetbiosName=$(Get-NetBIOSName($DomainName))
     ) 
-    Import-DscResource -ModuleName xActiveDirectory,xNetworking, xDisk
+    Import-DscResource -ModuleName xActiveDirectory, xDisk
     [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${DomainNetbiosName}\$($Admincreds.UserName)", $Admincreds.Password)
    
     Node localhost
     {
         # setting up DNS with default DNS servers for VNet does not work so install DNS and set this VMs DNS tp localhost temporarily
-        WindowsFeature DNS 
-        { 
-            Ensure = "Present" 
-            Name = "DNS"
-        }
-        xDnsServerAddress DnsServerAddress 
-        { 
-            Address        = '127.0.0.1' 
-            InterfaceAlias = 'Ethernet'
-            AddressFamily  = 'IPv4'
-            DependsOn="[WindowsFeature]DNS" 
-        }
         xWaitforDisk Disk2
         {
              DiskNumber = 2
@@ -65,13 +50,6 @@ configuration CreateADBDC
             Name = "AD-Domain-Services"
             # this is to stop the machine being rebooted during disk initialisation as there is a race condition that can cause disk init to fail
             DependsOn = "[xDisk]ADDataDisk"
-        } 
-        xDnsServerAddress DnsServerAddress 
-        { 
-            Address        = $DnsServerAddress 
-            InterfaceAlias = 'Ethernet'
-            AddressFamily  = 'IPv4'
-            DependsOn = "[WindowsFeature]ADDSInstall"
         } 
         xWaitForADDomain DscForestWait 
         { 

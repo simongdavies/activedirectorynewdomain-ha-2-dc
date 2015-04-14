@@ -585,7 +585,6 @@
 					"Properties": {
 						"DomainName": "[parameters('domainName')]",
 						"DomainNetBiosName":"[parameters('domainNetbiosName')]",
-						"DnsServerAddress" :"[parameters('adPDCNicIPAddress')]",
 						"AdminCreds":{
 							"UserName": "[parameters('adminUserName')]",
 							"Password": "PrivateSettingsRef:AdminPassword"

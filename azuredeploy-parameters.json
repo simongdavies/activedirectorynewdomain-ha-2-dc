@@ -3,10 +3,16 @@
 	"contentVersion": "1.0.0.0",
 	"parameters": {
 		"newStorageAccountName": {
-			"value": "adarmhatest2"
+			"value": "adarmhaserial"
 		},
 		"addnsName":{
-			"value":"adarmhatest2"
+			"value":"adarmhaserial"
+		},
+		"AssetLocation" :{
+			"value":"https://raw.githubusercontent.com/simongdavies/activedirectorynewdomain-ha-2-dc/serial/"
+		},
+		"deploymentLocation": {
+			"value":"East US"
 		}
 	}
 }
