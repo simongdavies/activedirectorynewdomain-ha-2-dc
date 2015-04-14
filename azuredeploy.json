@@ -239,7 +239,7 @@
 		"vnetwithDNSTemplateUri":"[concat(parameters('AssetLocation'),'/vnet-with-dns-server.json')]",
 		"adPDCModulesURL":"[concat(parameters('AssetLocation'),'/CreateADPDC.ps1.zip')]",
 		"adPDCConfigurationFunction":"CreateADPDC.ps1\\CreateADPDC",
-		"adBDCModulesURL":"[concat(parameters('AssetLocation'),'/VNetLink/CreateADBDC.ps1.zip')]",
+		"adBDCModulesURL":"[concat(parameters('AssetLocation'),'/CreateADBDC.ps1.zip')]",
 		"adBDCConfigurationFunction":"CreateADBDC.ps1\\CreateADBDC"
 	},
 	"resources": [

@@ -36,7 +36,6 @@ configuration CreateADBDC
              DiskNumber = 2
              RetryIntervalSec =$RetryIntervalSec
              RetryCount = $RetryCount
-             DependsOn="[WindowsFeature]DNS"
         }
         xDisk ADDataDisk
         {
@@ -57,7 +56,7 @@ configuration CreateADBDC
             DomainUserCredential= $DomainCreds
             RetryCount = $RetryCount 
             RetryIntervalSec = $RetryIntervalSec
-            DependsOn = "[xDnsServerAddress]DnsServerAddress" 
+            DependsOn = "[WindowsFeature]ADDSInstall" 
         } 
         xADDomainController BDC 
         { 
