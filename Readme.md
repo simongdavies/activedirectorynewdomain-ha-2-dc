@@ -5,6 +5,7 @@ This template will deploy 2 new VMs (along with a new VNet, Storage Account and 
 There are a number of issues\workarounds in this template and the associated DSC Script:
 
 1. Version 1.7 of the DSC Extension has a problem whereby the script execution policy will not allow scripts to be executed , therefore the DSC script provided updates the execution policy before the DSC extension is run and then sets it back to default once the configuration has been applied.
+2. This template is entirely serial due to some issues between the platform agent and the DSC extension which cause problems when multiple VM and\or extension resources are deployed concurrently, this willbe fixed in the future
 
 Click the button below to deploy
 
@@ -39,12 +40,6 @@ Below are the parameters that the template expects
 | adAvailabilitySetName | The name of the availability set that the AD VM is created in|
 | domainName | The FQDN of the AD Domain created |
 | domainNetbiosName | The NetBIOS name of the AD Domain created |
-| adPDCModulesURL |The URL to the zip containing the DSC package that creates and installs AD and the PDC <br> <ul> <li>**https://raw.githubusercontent.com/simongdavies/activedirectorynewdomain-ha-2-dc/master/CreateADPDC.ps1.zip (default)**</li></ul>|
-| adPDCConfigurationFunction | The name of the DSC Configuration Function that configures the VM , creates the AD Domain etc.<br> <ul> <li>**CreateADPDC.ps1\\CreateADPDC(default)** </li></ul> |
-| adBDCPrepareModulesURL |The URL to the zip containing the DSC package that prepares the VM <br> <ul> <li>**https://raw.githubusercontent.com/simongdavies/activedirectorynewdomain-ha-2-dc/master/PrepareADBDC.ps1.zip (default)**</li></ul>|
-| adBDCPrepareConfigurationFunction | The name of the DSC Configuration Function that prepares the VM prior to installing joining the domain and creating the DC<br> <ul> <li>**PrepareADBDC.ps1\\PrepareADBDC(default)** </li></ul> |
-| adBDCCreateModulesURL |The URL to the zip containing the DSC package that creates and installs the second DC <br> <ul> <li>**https://raw.githubusercontent.com/simongdavies/activedirectorynewdomain-ha-2-dc/master/CreateADBDC.ps1.zip (default)**</li></ul>|
-| adBDCCreateConfigurationFunction | The name of the DSC Configuration Function that configures the VM , creates the DC etc.<br> <ul> <li>**CreateADBDC.ps1\\CreateADBDC(default)** </li></ul> |
 | addnsName | The DNS prefix for the public IP address used by the Load Balancer |
 | PDCRDPPort | The public RDP port for the PDC VM |
 | BDCRDPPort | The public RDP port for the BDC VM |
