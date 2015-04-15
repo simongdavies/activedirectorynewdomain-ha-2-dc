@@ -25,7 +25,7 @@ configuration CreateADBDC
         [Int]$RetryIntervalSec=30,
         [String]$DomainNetbiosName=$(Get-NetBIOSName($DomainName))
     ) 
-    Import-DscResource -ModuleName xActiveDirectory, xDisk
+    Import-DscResource -ModuleName xActiveDirectory, xDisk, cDisk
     [System.Management.Automation.PSCredential ]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${DomainNetbiosName}\$($Admincreds.UserName)", $Admincreds.Password)
    
     Node localhost
@@ -37,7 +37,7 @@ configuration CreateADBDC
              RetryIntervalSec =$RetryIntervalSec
              RetryCount = $RetryCount
         }
-        xDisk ADDataDisk
+        cDiskNoRestart ADDataDisk
         {
             DiskNumber = 2
             DriveLetter = "F"
@@ -48,7 +48,7 @@ configuration CreateADBDC
             Ensure = "Present" 
             Name = "AD-Domain-Services"
             # this is to stop the machine being rebooted during disk initialisation as there is a race condition that can cause disk init to fail
-            DependsOn = "[xDisk]ADDataDisk"
+            DependsOn = "[cDiskNoRestart]ADDataDisk"
         } 
         xWaitForADDomain DscForestWait 
         { 
