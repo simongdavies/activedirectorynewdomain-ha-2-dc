@@ -310,11 +310,9 @@
 					{
 						"name": "[variables('adPDCRDPNAT')]",
 						"properties": {
-							"frontendIPConfigurations": [
-							{
+							"frontendIPConfiguration": {
 								"id": "[variables('adlbFEConfigID')]"
-							}
-							],
+							},
 							"protocol": "tcp",
 							"frontendPort": "[parameters('PDCRDPPort')]",
 							"backendPort": 3389,
@@ -324,11 +322,9 @@
 					{
 						"name": "[variables('adBDCRDPNAT')]",
 						"properties": {
-							"frontendIPConfigurations": [
-								{
+							"frontendIPConfiguration": {
 									"id": "[variables('adlbFEConfigID')]"
-								}
-							],
+							},
 							"protocol": "tcp",
 							"frontendPort": "[parameters('BDCRDPPort')]",
 							"backendPort": 3389,
