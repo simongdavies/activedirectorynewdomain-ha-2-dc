@@ -518,8 +518,7 @@
 				"[resourceId('Microsoft.Storage/storageAccounts',parameters('newStorageAccountName'))]",
 				"[resourceId('Microsoft.Network/networkInterfaces',parameters('adBDCNicName'))]",
 				"[resourceId('Microsoft.Compute/availabilitySets', parameters('adAvailabilitySetName'))]",
-				"[resourceId('Microsoft.Network/loadBalancers',variables('adLBName'))]",
-				"Microsoft.Resources/deployments/UpdateVNetDNS1"
+				"[resourceId('Microsoft.Network/loadBalancers',variables('adLBName'))]"
 			],
 			"properties": {
 				"hardwareProfile": {
