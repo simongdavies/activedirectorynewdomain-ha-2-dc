@@ -50,5 +50,9 @@
             LogPath = "F:\NTDS"
             SysvolPath = "F:\SYSVOL"
         }
+        LocalConfigurationManager 
+        {
+            ActionAfterReboot = 'StopConfiguration'
+        }
    }
 } 
