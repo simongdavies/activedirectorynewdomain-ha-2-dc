@@ -567,7 +567,8 @@
 			"apiVersion": "2014-12-01-preview",
 			"location": "[parameters('deploymentLocation')]",
 			"dependsOn":[
-				"[concat('Microsoft.Compute/virtualMachines/', parameters('adBDCVMName'))]"
+				"[concat('Microsoft.Compute/virtualMachines/', parameters('adBDCVMName'))]",
+				"Microsoft.Resources/deployments/UpdateVNetDNS1"
 			],
 			"properties": {
 				"publisher": "Microsoft.Powershell",
