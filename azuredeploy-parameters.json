@@ -3,10 +3,10 @@
 	"contentVersion": "1.0.0.0",
 	"parameters": {
 		"newStorageAccountName": {
-			"value": "adarmha6"
+			"value": "adarmha9"
 		},
 		"dnsPrefix":{
-			"value":"adarmha6"
+			"value":"adarmha9"
 		},
 		"AssetLocation" :{
 			"value":"https://raw.githubusercontent.com/simongdavies/activedirectorynewdomain-ha-2-dc/concurrent/"
